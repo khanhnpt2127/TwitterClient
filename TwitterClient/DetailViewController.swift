@@ -29,6 +29,8 @@ class DetailViewController: UIViewController, FaveButtonDelegate {
   @IBOutlet weak var likeButton: FaveButton!
   @IBOutlet weak var retweetedButton: FaveButton!
   
+  @IBOutlet weak var mediaPhotoImageView: UIImageView!
+  @IBOutlet weak var mediaHeightConstraint: NSLayoutConstraint!
   var ip: Int!
 		
   
@@ -91,6 +93,15 @@ class DetailViewController: UIViewController, FaveButtonDelegate {
       //avataImage.layer.borderColor = UIColor.blackColor().CGColor
       avataImage.layer.cornerRadius = avataImage.frame.height/2
       avataImage.clipsToBounds = true
+      
+      
+      if let photo = timeLine.photos?.first{
+        self.mediaHeightConstraint.constant = 130
+        self.mediaPhotoImageView.setImageWith(photo.photoURL)
+      }else{
+        self.mediaHeightConstraint.constant = 0
+      }
+      
     }
 
     override func didReceiveMemoryWarning() {
