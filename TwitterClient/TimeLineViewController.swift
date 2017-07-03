@@ -74,7 +74,7 @@ class TimeLineViewController: UIViewController {
     
     
   }
-
+  
   func loadDataWithRefreshControl(_ refreshControl: UIRefreshControl) {
     
     isFreshDataLoading = true
@@ -154,7 +154,7 @@ class TimeLineViewController: UIViewController {
     } else if segue.identifier == "RepyScreen" {
       let navigationController = segue.destination as! UINavigationController
       let controller = navigationController.topViewController as! ReplyViewController
-      
+      controller.delegate = self
       let timeLine = sender as! TimeLine
       
       controller.timeLine = timeLine
@@ -164,7 +164,7 @@ class TimeLineViewController: UIViewController {
       let navigationController = segue.destination as! UINavigationController
       let controller = navigationController.topViewController as! NewTwetterViewController
       
-     controller.delegate = self
+      controller.delegate = self
       
     }
   }
@@ -196,71 +196,76 @@ extension TimeLineViewController: TimeLineCellDelegate {
   func onFavoritedClick(cell: TimeLineCell, isFavorited: Bool) {
     let ip = tableView.indexPath(for: cell)?.row
     
-    // print("isFavorited: \(isFavorited)")
-    // if like button is select then unfavoried else favoried
-    if !isFavorited {
-      TwitterAPI.sharedInstance?.unFavoriteStatus(id: timeLines[ip!].idStr) {
-        (timeLine, error) in
-        if error == nil {
-          print("***unfavoried success")
-          self.timeLines[ip!] = timeLine!
-          self.tableView.reloadData()
-          //self.timeLines[ip!].favCount = ti
-        } else {
-          print("have error when unfavoried \(error!)")
-          self.tableView.reloadData()
+    if ip != nil {
+      
+      
+      if !isFavorited {
+        TwitterAPI.sharedInstance?.unFavoriteStatus(id: timeLines[ip!].idStr) {
+          (timeLine, error) in
+          if error == nil {
+            print("***unfavoried success")
+            self.timeLines[ip!] = timeLine!
+            self.tableView.reloadData()
+            //self.timeLines[ip!].favCount = ti
+          } else {
+            print("have error when unfavoried \(error!)")
+            self.tableView.reloadData()
+          }
+        }
+      } else {
+        TwitterAPI.sharedInstance?.favoriteStatus(id: timeLines[ip!].idStr) {
+          (timeLine, error) in
+          if error == nil {
+            print("***favorite success")
+            self.timeLines[ip!] = timeLine!
+            self.tableView.reloadData()
+            //self.timeLines[ip!].favorited = isFavorited
+          } else {
+            print("have error when favorited \(error!)")
+            self.tableView.reloadData()
+          }
         }
       }
     } else {
-      TwitterAPI.sharedInstance?.favoriteStatus(id: timeLines[ip!].idStr) {
-        (timeLine, error) in
-        if error == nil {
-          print("***favorite success")
-          self.timeLines[ip!] = timeLine!
-          self.tableView.reloadData()
-          //self.timeLines[ip!].favorited = isFavorited
-        } else {
-          print("have error when favorited \(error!)")
-          self.tableView.reloadData()
-        }
-      }
+      print("*** have error ip = nil")
     }
-    
     
   }
   
   func onRetweetClick(cell: TimeLineCell, isRetweet: Bool) {
     let ip = tableView.indexPath(for: cell)?.row
     
-    // print("isRetweet: \(isRetweet)")
-    
-    // if Retweet button is select then unRetweet else Retweet
-    if !isRetweet {
-      TwitterAPI.sharedInstance?.unRetweetStatus(id: timeLines[ip!].idStr) {
-        (timeLine, error) in
-        if error == nil {
-          print("***unRetweet success")
-          self.timeLines[ip!] = timeLine!
-          self.tableView.reloadData()
-          //self.timeLines[ip!].retweeted = isRetweet
-        } else {
-          print("have error when unRetweet \(error!)")
-          self.tableView.reloadData()
+    if ip != nil {
+      
+      if !isRetweet {
+        TwitterAPI.sharedInstance?.unRetweetStatus(id: timeLines[ip!].idStr) {
+          (timeLine, error) in
+          if error == nil {
+            print("***unRetweet success")
+            self.timeLines[ip!] = timeLine!
+            self.tableView.reloadData()
+            //self.timeLines[ip!].retweeted = isRetweet
+          } else {
+            print("have error when unRetweet \(error!)")
+            self.tableView.reloadData()
+          }
+        }
+      } else {
+        TwitterAPI.sharedInstance?.retweetStatus(id: timeLines[ip!].idStr) {
+          (timeLine, error) in
+          if error == nil {
+            print("***retweet success")
+            self.timeLines[ip!] = timeLine!
+            self.tableView.reloadData()
+            //self.timeLines[ip!].retweeted = isRetweet
+          } else {
+            print("have error when retweet \(error!)")
+            self.tableView.reloadData()
+          }
         }
       }
     } else {
-      TwitterAPI.sharedInstance?.retweetStatus(id: timeLines[ip!].idStr) {
-        (timeLine, error) in
-        if error == nil {
-          print("***retweet success")
-          self.timeLines[ip!] = timeLine!
-          self.tableView.reloadData()
-          //self.timeLines[ip!].retweeted = isRetweet
-        } else {
-          print("have error when retweet \(error!)")
-          self.tableView.reloadData()
-        }
-      }
+      print("*** have error ip = nil")
     }
     
   }
@@ -273,6 +278,15 @@ extension TimeLineViewController: TimeLineCellDelegate {
 
 extension TimeLineViewController: NewTwetterViewControllerDelegate {
   func newTwetterViewController(viewController: NewTwetterViewController, tileLine: TimeLine) {
+    timeLines.insert(tileLine, at: 0)
+    tableView.reloadData()
+    // roll tableview to top
+    tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: UITableViewScrollPosition.top, animated: true)
+  }
+}
+
+extension TimeLineViewController: ReplyViewControllerDelegate {
+  func ReplyViewController(viewController: ReplyViewController, tileLine: TimeLine) {
     timeLines.insert(tileLine, at: 0)
     tableView.reloadData()
     // roll tableview to top
@@ -301,7 +315,7 @@ extension TimeLineViewController: UIScrollViewDelegate {
         loadingMoreView?.frame = frame
         loadingMoreView!.startAnimating()
         
-       doLoadMore(id: timeLines.last?.idStr)
+        doLoadMore(id: timeLines.last?.idStr)
       }
     }
   }

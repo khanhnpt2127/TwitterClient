@@ -7,6 +7,9 @@
 //
 
 import UIKit
+protocol ReplyViewControllerDelegate {
+  func ReplyViewController(viewController: ReplyViewController, tileLine: TimeLine)
+}
 
 class ReplyViewController: UIViewController, UITextViewDelegate {
 
@@ -18,6 +21,8 @@ class ReplyViewController: UIViewController, UITextViewDelegate {
   @IBOutlet weak var countLabel: UILabel!
   
   var placeholderLabel : UILabel!
+  var delegate: ReplyViewControllerDelegate!
+		
 
   
   var timeLine: TimeLine!
@@ -88,6 +93,7 @@ class ReplyViewController: UIViewController, UITextViewDelegate {
       (timeLine, error) in
       if error == nil {
         print("***Reply twitter success")
+        self.delegate.ReplyViewController(viewController: self, tileLine: timeLine!)
         self.dismiss(animated: true, completion: nil)
       } else {
         print("***have error when Reply twitter \(error!)")

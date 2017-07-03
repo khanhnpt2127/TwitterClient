@@ -55,6 +55,14 @@ class TimeLineCell: UITableViewCell, FaveButtonDelegate {
       retweetedButton.setSelected(selected: isRetweet, animated: false)
       
       
+      
+     // avataImage.layer.borderWidth = 1
+      avataImage.layer.masksToBounds = false
+      //avataImage.layer.borderColor = UIColor.blackColor().CGColor
+      avataImage.layer.cornerRadius = avataImage.frame.height/2
+      avataImage.clipsToBounds = true
+      
+      
       if let userRetweet = timeLine.UserRetweet  {
         nameRetweetedLabel.text = userRetweet.name! + " retweeted"
         imageRetweeted.isHidden = false
@@ -99,5 +107,6 @@ class TimeLineCell: UITableViewCell, FaveButtonDelegate {
   
 
 }
+
 
 

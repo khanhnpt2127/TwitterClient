@@ -47,6 +47,11 @@ class DetailViewController: UIViewController, FaveButtonDelegate {
       likeButton.delegate = self
       retweetedButton.delegate = self
       
+      let logo = UIImage(named: "iconsNav")
+      let imageView = UIImageView(image:logo)
+      self.navigationItem.titleView = imageView
+      
+     
       
       // set navibar color
       navigationController!.navigationBar.barTintColor = UIColor.white
@@ -79,6 +84,13 @@ class DetailViewController: UIViewController, FaveButtonDelegate {
         imageRetweeted.isHidden = true
         nameRetweetedLabel.isHidden = true
       }
+      
+      
+      // avataImage.layer.borderWidth = 1
+      avataImage.layer.masksToBounds = false
+      //avataImage.layer.borderColor = UIColor.blackColor().CGColor
+      avataImage.layer.cornerRadius = avataImage.frame.height/2
+      avataImage.clipsToBounds = true
     }
 
     override func didReceiveMemoryWarning() {
@@ -134,7 +146,10 @@ class DetailViewController: UIViewController, FaveButtonDelegate {
           if error == nil {
             print("***unRetweet success")
             
-            self.delegate.detailViewController(viewController: self, timeLine: timeLine!, ip: self.ip)
+            let getTimeline = timeLine!
+            getTimeline.retweeted = false
+            
+            self.delegate.detailViewController(viewController: self, timeLine: getTimeline, ip: self.ip)
             
            // print("&&&&&&&\(timeLine?.retweeted)")
             
