@@ -33,7 +33,9 @@ class TimeLineCell: UITableViewCell, FaveButtonDelegate {
   @IBOutlet weak var retweetedButton: FaveButton!
   
   @IBOutlet weak var countTest: UILabel!
+  @IBOutlet weak var mediaPhotoImageView: UIImageView!
 
+  @IBOutlet weak var mediaHeightConstraint: NSLayoutConstraint!
   var delegate: TimeLineCellDelegate!
   var isFavorited = false
   var isRetweet = false
@@ -72,6 +74,17 @@ class TimeLineCell: UITableViewCell, FaveButtonDelegate {
         imageRetweeted.isHidden = true
         nameRetweetedLabel.isHidden = true
       }
+      
+      
+      
+      
+      if let photo = timeLine.photos?.first{
+        self.mediaHeightConstraint.constant = self.mediaPhotoImageView.frame.size.width * photo.size.height / photo.size.width
+        self.mediaPhotoImageView.setImageWith(photo.photoURL)
+      }else{
+        self.mediaHeightConstraint.constant = 0
+      }
+ 
     }
     
   }

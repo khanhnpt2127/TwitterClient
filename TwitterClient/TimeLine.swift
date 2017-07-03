@@ -27,6 +27,9 @@ class TimeLine: NSObject {
   var retweetCount = 0
   var favCount = 0
   
+ // var mediaArray: [[String: Any]]?
+  var photos: [TweetPhoto]?
+  
   
   init(dictionary: NSDictionary) {
     
@@ -38,6 +41,17 @@ class TimeLine: NSObject {
       
       UserRetweet = User(dictionary: dictionary["user"] as! NSDictionary)
       user = User(dictionary: retweetStatus!["user"] as! NSDictionary)
+      
+      
+      let entitiesDict = retweetStatus!["entities"] as? [String: Any]
+        
+      let mediaArray = entitiesDict!["media"] as? [[String: Any]]
+      
+      if let mediaDictArray = mediaArray {
+        photos =  mediaDictArray.map { (mediaDict) -> TweetPhoto in
+          TweetPhoto(photoDict: mediaDict)
+        }
+      }
       
       idStr = retweetStatus!["id_str"] as? String
       id = retweetStatus!["id"] as? Int
@@ -69,6 +83,17 @@ class TimeLine: NSObject {
     else {
       user = User(dictionary: dictionary["user"] as! NSDictionary)
       text = dictionary["text"] as? String
+      
+      let entitiesDict = dictionary["entities"] as? [String: Any]
+      
+      let mediaArray = entitiesDict!["media"] as? [[String: Any]]
+      
+      if let mediaDictArray = mediaArray {
+        photos =  mediaDictArray.map { (mediaDict) -> TweetPhoto in
+          TweetPhoto(photoDict: mediaDict)
+        }
+      }
+      
       
       idStr = dictionary["id_str"] as? String
       id = dictionary["id"] as? Int
