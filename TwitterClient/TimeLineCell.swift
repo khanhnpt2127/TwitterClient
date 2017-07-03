@@ -32,6 +32,8 @@ class TimeLineCell: UITableViewCell, FaveButtonDelegate {
   @IBOutlet weak var likeButton: FaveButton!
   @IBOutlet weak var retweetedButton: FaveButton!
   
+  @IBOutlet weak var countTest: UILabel!
+  var count: Int!
   var delegate: TimeLineCellDelegate!
   var isFavorited = false
   var isRetweet = false
@@ -51,7 +53,8 @@ class TimeLineCell: UITableViewCell, FaveButtonDelegate {
       isRetweet = timeLine.retweeted
       likeButton.setSelected(selected: isFavorited, animated: false)
       retweetedButton.setSelected(selected: isRetweet, animated: false)
-
+      
+      countTest.text = "\(count!)"
       
       if let userRetweet = timeLine.UserRetweet  {
         nameRetweetedLabel.text = userRetweet.name! + " retweeted"

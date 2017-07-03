@@ -44,10 +44,8 @@ class NewTwetterViewController: UIViewController, UITextViewDelegate {
     createTwetterButton.backgroundColor = UIColor.lightGray
     createTwetterButton.layer.cornerRadius = 10
     
-    // settup textview to ligtgray to setting Placeholder
-//    textView.text = "What's happening ?"
-//    textView.textColor = UIColor.lightGray
-    
+
+    // add placeholder in TexView
     placeholderLabel = UILabel()
     placeholderLabel.text = "What's happening ?"
     placeholderLabel.font = UIFont.italicSystemFont(ofSize: (textView.font?.pointSize)!)
@@ -68,6 +66,12 @@ class NewTwetterViewController: UIViewController, UITextViewDelegate {
   
   func textViewDidChange(_ textView: UITextView) {
     placeholderLabel.isHidden = !textView.text.isEmpty
+    
+    
+    if textView.text.characters.count == 0 {
+      createTwetterButton.backgroundColor = UIColor.lightGray
+      createTwetterButton.isEnabled = false
+    }
     
     let counter = 140 - textView.text.characters.count
     countLabel.text = "\(counter)"

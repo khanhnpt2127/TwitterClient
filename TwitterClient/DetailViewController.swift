@@ -9,6 +9,10 @@
 import UIKit
 import AFNetworking
 
+protocol DetailViewControllerDelegate {
+  func detailViewController(viewController: DetailViewController, timeLine: TimeLine, ip: Int)
+}
+
 class DetailViewController: UIViewController, FaveButtonDelegate {
   
   @IBOutlet weak var nameLabel: UILabel!
@@ -25,13 +29,23 @@ class DetailViewController: UIViewController, FaveButtonDelegate {
   @IBOutlet weak var likeButton: FaveButton!
   @IBOutlet weak var retweetedButton: FaveButton!
   
+  var ip: Int!
+		
+  
+  
   var isFavorited = false
   var isRetweet = false
+  
+  var delegate: DetailViewControllerDelegate!
+		
   
   var timeLine: TimeLine!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+      
+      likeButton.delegate = self
+      retweetedButton.delegate = self
 
       nameLabel.text = timeLine.user!.name
       tagNameLabel.text = "@" + timeLine.user!.screenName!
@@ -69,27 +83,100 @@ class DetailViewController: UIViewController, FaveButtonDelegate {
     }
   
   func faveButton(_ faveButton: FaveButton, didSelected selected: Bool){
-//    if faveButton == likeButton {
-//      isFavorited = !isFavorited
-//      delegate.onFavoritedClick(cell: self, isFavorited: isFavorited)
-//      print("like button click")
-//    } else if faveButton == retweetedButton{
-//      isRetweet = !isRetweet
-//      delegate.onRetweetClick(cell: self, isRetweet: isRetweet)
-//      print("retweet button click")
-//    }
+    if faveButton == likeButton {
+      isFavorited = !isFavorited
+      if !isFavorited {
+        TwitterAPI.sharedInstance?.unFavoriteStatus(id: timeLine.idStr) {
+          (timeLine, error) in
+          if error == nil {
+            print("***unfavoried success")
+            
+            self.delegate.detailViewController(viewController: self, timeLine: timeLine!, ip: self.ip)
+            
+            self.numberLikeLabel.text = "\(timeLine!.favCount)"
+            self.numberRetweetedLabel.text = "\(timeLine!.retweetCount)"
+          } else {
+            print("have error when unfavoried \(error!)")
+          }
+        }
+      } else {
+        TwitterAPI.sharedInstance?.favoriteStatus(id: timeLine.idStr) {
+          (timeLine, error) in
+          if error == nil {
+            print("***favorite success")
+            
+            self.delegate.detailViewController(viewController: self, timeLine: timeLine!, ip: self.ip)
+            
+            self.numberLikeLabel.text = "\(timeLine!.favCount)"
+            self.numberRetweetedLabel.text = "\(timeLine!.retweetCount)"
+           
+            //self.timeLines[ip!].favorited = isFavorited
+          } else {
+            print("have error when favorited \(error!)")
+            
+          }
+        }
+      }
+      
+      
+      //delegate.onFavoritedClick(cell: self, isFavorited: isFavorited)
+     // print("like button click")
+    } else if faveButton == retweetedButton{
+      isRetweet = !isRetweet
+      // if Retweet button is select then unRetweet else Retweet
+      if !isRetweet {
+        TwitterAPI.sharedInstance?.unRetweetStatus(id: timeLine.idStr) {
+          (timeLine, error) in
+          if error == nil {
+            print("***unRetweet success")
+            
+            self.delegate.detailViewController(viewController: self, timeLine: timeLine!, ip: self.ip)
+            
+           // print("&&&&&&&\(timeLine?.retweeted)")
+            
+            self.numberLikeLabel.text = "\(timeLine!.favCount)"
+           self.numberRetweetedLabel.text = "\(timeLine!.retweetCount)"
+            //self.timeLines[ip!].retweeted = isRetweet
+          } else {
+            print("have error when unRetweet \(error!)")
+            
+          }
+        }
+      } else {
+        TwitterAPI.sharedInstance?.retweetStatus(id: timeLine.idStr) {
+          (timeLine, error) in
+          if error == nil {
+            print("***retweet success")
+            
+            self.delegate.detailViewController(viewController: self, timeLine: timeLine!, ip: self.ip)
+           // print("&&&&&&&\(timeLine?.retweeted)")
+            
+            self.numberLikeLabel.text = "\(timeLine!.favCount)"
+            self.numberRetweetedLabel.text = "\(timeLine!.retweetCount)"
+            //self.timeLines[ip!].retweeted = isRetweet
+          } else {
+            print("have error when retweet \(error!)")
+            
+          }
+        }
+      }
+      
+      //delegate.onRetweetClick(cell: self, isRetweet: isRetweet)
+     // print("retweet button click")
+    }
     
   }
     
 
-    /*
+  
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+      let navigationController = segue.destination as! UINavigationController
+      let controller = navigationController.topViewController as! ReplyViewController
+      
+      controller.timeLine = timeLine
+  }
+  
 
 }

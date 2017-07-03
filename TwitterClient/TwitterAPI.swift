@@ -59,8 +59,17 @@ class TwitterAPI: BDBOAuth1SessionManager {
   
   // MARK: - Get home time line
   
-  func homeTimeline(complete: @escaping ([TimeLine]?, Error?) -> Void) {
-    _ = get("1.1/statuses/home_timeline.json", parameters: nil, progress: nil, success: { (_: URLSessionDataTask, response: Any?) in
+  func homeTimeline(idNext: String?, complete: @escaping ([TimeLine]?, Error?) -> Void) {
+    
+    var prameters: NSDictionary?
+    if let id = idNext {
+      prameters = NSDictionary(dictionary: ["max_id": id])
+    } else {
+      prameters = nil
+    }
+    
+    
+    _ = get("1.1/statuses/home_timeline.json", parameters: prameters, progress: nil, success: { (_: URLSessionDataTask, response: Any?) in
       if let response = response  {
         let dictionaryResponse = response as! [NSDictionary]
         

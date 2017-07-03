@@ -15,6 +15,10 @@ class TimeLineViewController: UIViewController {
   var timeLines = [TimeLine]()
 		
   @IBOutlet weak var tableView: UITableView!
+  
+  var isMoreDataLoading = false
+  var isFreshDataLoading = false
+  var loadingMoreView:InfiniteScrollActivityView?
 		
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -23,6 +27,16 @@ class TimeLineViewController: UIViewController {
     tableView.estimatedRowHeight = 100
     tableView.rowHeight = UITableViewAutomaticDimension
     
+    
+    // Set up Infinite Scroll loading indicator
+    let frame = CGRect(x: 0, y: tableView.contentSize.height, width: tableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
+    loadingMoreView = InfiniteScrollActivityView(frame: frame)
+    loadingMoreView!.isHidden = true
+    tableView.addSubview(loadingMoreView!)
+    
+    var insets = tableView.contentInset
+    insets.bottom += InfiniteScrollActivityView.defaultHeight
+    tableView.contentInset = insets
     
     
     getTimeLine()
@@ -52,11 +66,19 @@ class TimeLineViewController: UIViewController {
     
     
   }
+  @IBAction func onNext(_ sender: UIBarButtonItem) {
+    doLoadMore(id: timeLines[timeLines.count - 1].idStr)
+  }
   func loadDataWithRefreshControl(_ refreshControl: UIRefreshControl) {
-    TwitterAPI.sharedInstance?.homeTimeline {
+    
+    isFreshDataLoading = true
+    timeLines.removeAll()
+    self.tableView.reloadData()
+    
+    
+    TwitterAPI.sharedInstance?.homeTimeline(idNext: nil) {
       (timeLines, error) in
       if (error == nil) {
-        self.timeLines.removeAll()
         for timeLine in timeLines! {
           self.timeLines.append(timeLine)
         }
@@ -64,19 +86,20 @@ class TimeLineViewController: UIViewController {
         print("\(error!.localizedDescription)")
       }
       refreshControl.endRefreshing()
-      self.tableView.reloadData()
       
+      
+      self.tableView.reloadData()
+      self.isFreshDataLoading = false
     }
+    
   }
   func getTimeLine() {
+    
+    timeLines.removeAll()
+    
     MBProgressHUD.showAdded(to: self.view, animated: true)
-    //    TwitterAPI.sharedInstance?.getUserInfo {
-    //      (complete) in
-    //      print(complete.name)
-    //    }
     
-    
-    TwitterAPI.sharedInstance?.homeTimeline {
+    TwitterAPI.sharedInstance?.homeTimeline(idNext: nil) {
       (timeLines, error) in
       MBProgressHUD.hide(for: self.view, animated: true)
       if (error == nil) {
@@ -91,10 +114,36 @@ class TimeLineViewController: UIViewController {
     }
   }
   
+  func doLoadMore(id: String?) {
+    
+    TwitterAPI.sharedInstance?.homeTimeline(idNext: id) {
+      (timeLines, error) in
+      // Update flag load more
+      self.isMoreDataLoading = false
+      self.loadingMoreView!.stopAnimating()
+      
+      if (error == nil) {
+        var timeLineArray = timeLines!
+        timeLineArray.remove(at: 0)
+        for timeLine in timeLineArray {
+          //if !timeLine.isEqual(timeLines?.first)
+          self.timeLines.append(timeLine)
+        }
+      } else {
+        print("\(error!.localizedDescription)")
+      }
+      self.tableView.reloadData()
+      
+    }
+  }
+  
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     if segue.identifier == "ViewDetail" {
       let viewController = segue.destination as! DetailViewController
+      viewController.delegate = self
+      
       let ip = tableView.indexPathForSelectedRow!.row
+      viewController.ip = ip
       viewController.timeLine = timeLines[ip]
     } else if segue.identifier == "RepyScreen" {
       let navigationController = segue.destination as! UINavigationController
@@ -128,6 +177,7 @@ extension TimeLineViewController: UITableViewDelegate, UITableViewDataSource {
   }
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "TimeLineCell", for: indexPath) as! TimeLineCell
+    cell.count = indexPath.row
     
     cell.delegate = self
     
@@ -222,6 +272,40 @@ extension TimeLineViewController: NewTwetterViewControllerDelegate {
     tableView.reloadData()
     // roll tableview to top
     tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: UITableViewScrollPosition.top, animated: true)
+  }
+}
+
+
+
+// MARK: - Load More Data
+extension TimeLineViewController: UIScrollViewDelegate {
+  
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    if (!isMoreDataLoading && !isFreshDataLoading) {
+      // Calculate the position of one screen length before the bottom of the results
+      let scrollViewContentHeight = tableView.contentSize.height
+      let scrollOffsetThreshold = scrollViewContentHeight - tableView.bounds.size.height
+      
+      // When the user has scrolled past the threshold, start requesting
+      if(scrollView.contentOffset.y > scrollOffsetThreshold && tableView.isDragging) {
+        
+        isMoreDataLoading = true
+        
+        // Update position of loadingMoreView, and start loading indicator
+        let frame = CGRect(x: 0, y: tableView.contentSize.height, width: tableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
+        loadingMoreView?.frame = frame
+        loadingMoreView!.startAnimating()
+        
+       doLoadMore(id: timeLines.last?.idStr)
+      }
+    }
+  }
+}
+
+extension TimeLineViewController: DetailViewControllerDelegate {
+  func detailViewController(viewController: DetailViewController, timeLine: TimeLine, ip: Int) {
+    timeLines[ip] = timeLine
+    tableView.reloadData()
   }
 }
 
