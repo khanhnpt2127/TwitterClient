@@ -9,7 +9,18 @@
 /* Begin PBXBuildFile section */
 		2CDEFAA3F7753ED2BA817342 /* Pods_TwitterClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AC407DBE49EA23C20FDC005 /* Pods_TwitterClient.framework */; };
 		5BC7DBAB1F07D64000AEE6D6 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC7DBAA1F07D64000AEE6D6 /* DetailViewController.swift */; };
+		5BC7DBAD1F07F8DE00AEE6D6 /* NewTwetterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC7DBAC1F07F8DE00AEE6D6 /* NewTwetterViewController.swift */; };
 		5BCCD0CA1F056BB500F1F91A /* TimeLineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCCD0C91F056BB500F1F91A /* TimeLineCell.swift */; };
+		5BDB857C1F08976600C9ABDA /* Constraints+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDB85741F08976600C9ABDA /* Constraints+.swift */; };
+		5BDB857D1F08976600C9ABDA /* Easing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDB85751F08976600C9ABDA /* Easing.swift */; };
+		5BDB857E1F08976600C9ABDA /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDB85761F08976600C9ABDA /* Geometry.swift */; };
+		5BDB857F1F08976600C9ABDA /* Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDB85771F08976600C9ABDA /* Init.swift */; };
+		5BDB85801F08976600C9ABDA /* FaveButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDB85781F08976600C9ABDA /* FaveButton.swift */; };
+		5BDB85811F08976600C9ABDA /* FaveIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDB85791F08976600C9ABDA /* FaveIcon.swift */; };
+		5BDB85821F08976600C9ABDA /* Ring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDB857A1F08976600C9ABDA /* Ring.swift */; };
+		5BDB85831F08976600C9ABDA /* Spark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDB857B1F08976600C9ABDA /* Spark.swift */; };
+		5BDB85851F0920B800C9ABDA /* ReplyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDB85841F0920B800C9ABDA /* ReplyViewController.swift */; };
+		5BDB85871F096B1000C9ABDA /* MyColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDB85861F096B1000C9ABDA /* MyColor.swift */; };
 		5BF6BE0B1F039F65007C6ECD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF6BE0A1F039F65007C6ECD /* AppDelegate.swift */; };
 		5BF6BE101F039F65007C6ECD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5BF6BE0E1F039F65007C6ECD /* Main.storyboard */; };
 		5BF6BE121F039F65007C6ECD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5BF6BE111F039F65007C6ECD /* Assets.xcassets */; };
@@ -48,7 +59,18 @@
 		3AC407DBE49EA23C20FDC005 /* Pods_TwitterClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TwitterClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FF568B7EA0DD560B344E2C8 /* Pods-TwitterClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TwitterClient.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TwitterClient/Pods-TwitterClient.debug.xcconfig"; sourceTree = "<group>"; };
 		5BC7DBAA1F07D64000AEE6D6 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		5BC7DBAC1F07F8DE00AEE6D6 /* NewTwetterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTwetterViewController.swift; sourceTree = "<group>"; };
 		5BCCD0C91F056BB500F1F91A /* TimeLineCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeLineCell.swift; sourceTree = "<group>"; };
+		5BDB85741F08976600C9ABDA /* Constraints+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Constraints+.swift"; sourceTree = "<group>"; };
+		5BDB85751F08976600C9ABDA /* Easing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Easing.swift; sourceTree = "<group>"; };
+		5BDB85761F08976600C9ABDA /* Geometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Geometry.swift; sourceTree = "<group>"; };
+		5BDB85771F08976600C9ABDA /* Init.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Init.swift; sourceTree = "<group>"; };
+		5BDB85781F08976600C9ABDA /* FaveButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaveButton.swift; sourceTree = "<group>"; };
+		5BDB85791F08976600C9ABDA /* FaveIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaveIcon.swift; sourceTree = "<group>"; };
+		5BDB857A1F08976600C9ABDA /* Ring.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ring.swift; sourceTree = "<group>"; };
+		5BDB857B1F08976600C9ABDA /* Spark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spark.swift; sourceTree = "<group>"; };
+		5BDB85841F0920B800C9ABDA /* ReplyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyViewController.swift; sourceTree = "<group>"; };
+		5BDB85861F096B1000C9ABDA /* MyColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyColor.swift; sourceTree = "<group>"; };
 		5BF6BE071F039F65007C6ECD /* TwitterClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwitterClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BF6BE0A1F039F65007C6ECD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5BF6BE0F1F039F65007C6ECD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -101,6 +123,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5BDB85721F0896EF00C9ABDA /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				5BDB85731F08976600C9ABDA /* Helpers */,
+				5BDB85781F08976600C9ABDA /* FaveButton.swift */,
+				5BDB85791F08976600C9ABDA /* FaveIcon.swift */,
+				5BDB857A1F08976600C9ABDA /* Ring.swift */,
+				5BDB857B1F08976600C9ABDA /* Spark.swift */,
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
+		5BDB85731F08976600C9ABDA /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				5BDB85741F08976600C9ABDA /* Constraints+.swift */,
+				5BDB85751F08976600C9ABDA /* Easing.swift */,
+				5BDB85761F08976600C9ABDA /* Geometry.swift */,
+				5BDB85771F08976600C9ABDA /* Init.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		5BF6BDFE1F039F64007C6ECD = {
 			isa = PBXGroup;
 			children = (
@@ -126,6 +171,7 @@
 		5BF6BE091F039F65007C6ECD /* TwitterClient */ = {
 			isa = PBXGroup;
 			children = (
+				5BDB85721F0896EF00C9ABDA /* Libraries */,
 				5BF6BE3B1F03A01E007C6ECD /* View Controllers */,
 				5BF6BE3A1F03A013007C6ECD /* Models */,
 				5BF6BE391F03A00D007C6ECD /* API */,
@@ -135,6 +181,7 @@
 				5BF6BE111F039F65007C6ECD /* Assets.xcassets */,
 				5BF6BE131F039F65007C6ECD /* LaunchScreen.storyboard */,
 				5BF6BE161F039F65007C6ECD /* Info.plist */,
+				5BDB85861F096B1000C9ABDA /* MyColor.swift */,
 			);
 			path = TwitterClient;
 			sourceTree = "<group>";
@@ -188,6 +235,8 @@
 				5BF6BE421F03A86E007C6ECD /* LoginViewController.swift */,
 				5BF6BE441F03AE92007C6ECD /* TimeLineViewController.swift */,
 				5BC7DBAA1F07D64000AEE6D6 /* DetailViewController.swift */,
+				5BC7DBAC1F07F8DE00AEE6D6 /* NewTwetterViewController.swift */,
+				5BDB85841F0920B800C9ABDA /* ReplyViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -499,13 +548,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5BDB857F1F08976600C9ABDA /* Init.swift in Sources */,
+				5BDB85851F0920B800C9ABDA /* ReplyViewController.swift in Sources */,
+				5BDB85811F08976600C9ABDA /* FaveIcon.swift in Sources */,
 				5BF6BE3F1F03A1F0007C6ECD /* User.swift in Sources */,
+				5BDB85871F096B1000C9ABDA /* MyColor.swift in Sources */,
+				5BDB857E1F08976600C9ABDA /* Geometry.swift in Sources */,
+				5BC7DBAD1F07F8DE00AEE6D6 /* NewTwetterViewController.swift in Sources */,
+				5BDB85821F08976600C9ABDA /* Ring.swift in Sources */,
 				5BF6BE3D1F03A107007C6ECD /* TwitterAPI.swift in Sources */,
 				5BF6BE411F03A20E007C6ECD /* TimeLine.swift in Sources */,
+				5BDB85831F08976600C9ABDA /* Spark.swift in Sources */,
 				5BF6BE431F03A86E007C6ECD /* LoginViewController.swift in Sources */,
+				5BDB85801F08976600C9ABDA /* FaveButton.swift in Sources */,
 				5BF6BE0B1F039F65007C6ECD /* AppDelegate.swift in Sources */,
 				5BF6BE451F03AE92007C6ECD /* TimeLineViewController.swift in Sources */,
 				5BCCD0CA1F056BB500F1F91A /* TimeLineCell.swift in Sources */,
+				5BDB857C1F08976600C9ABDA /* Constraints+.swift in Sources */,
+				5BDB857D1F08976600C9ABDA /* Easing.swift in Sources */,
 				5BC7DBAB1F07D64000AEE6D6 /* DetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

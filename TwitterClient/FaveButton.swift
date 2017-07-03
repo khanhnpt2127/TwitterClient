@@ -63,11 +63,19 @@ open class FaveButton: UIButton {
     
     fileprivate var faveIconImage:UIImage?
     fileprivate var faveIcon: FaveIcon!
+    fileprivate var animationsEnabled = true
     
     
     override open var isSelected: Bool{
         didSet{
-            animateSelect(self.isSelected, duration: Const.duration)
+        //  print("******isSelected: \(isSelected)")
+         // print("******animationsEnabled: \(animationsEnabled)")
+          guard self.animationsEnabled else {
+            return
+          }
+          
+          animateSelect(self.isSelected, duration: Const.duration)
+          
         }
     }
     
@@ -114,8 +122,25 @@ extension FaveButton{
         
         addActions()
     }
+  
+  public func setSelected(selected: Bool, animated: Bool) {
+    guard selected != self.isSelected else {
+      return
+    }
+    guard animated == false else {
+      self.isSelected = selected
+      return
+    }
     
+    self.animationsEnabled = false
+    self.isSelected = selected
+    self.animationsEnabled = true
     
+    animateSelect(self.isSelected, duration: 0.0) // trigger state change without animation
+  }
+
+  
+  
     fileprivate func createFaveIcon(_ faveIconImage: UIImage) -> FaveIcon{
         return FaveIcon.createFaveIcon(self, icon: faveIconImage,color: normalColor)
     }

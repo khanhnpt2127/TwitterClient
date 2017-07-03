@@ -8,19 +8,13 @@
 
 import UIKit
 import AFNetworking
-import FaveButton
 
-func color(_ rgbColor: Int) -> UIColor{
-  return UIColor(
-    red:   CGFloat((rgbColor & 0xFF0000) >> 16) / 255.0,
-    green: CGFloat((rgbColor & 0x00FF00) >> 8 ) / 255.0,
-    blue:  CGFloat((rgbColor & 0x0000FF) >> 0 ) / 255.0,
-    alpha: CGFloat(1.0)
-  )
-}
+
+
 protocol TimeLineCellDelegate {
   func onFavoritedClick(cell: TimeLineCell, isFavorited: Bool)
   func onRetweetClick(cell: TimeLineCell, isRetweet: Bool)
+  func onReplyClick(cell: TimeLineCell, timeLine: TimeLine)
 }
 
 class TimeLineCell: UITableViewCell, FaveButtonDelegate {
@@ -55,22 +49,12 @@ class TimeLineCell: UITableViewCell, FaveButtonDelegate {
       
       isFavorited = timeLine.favorited
       isRetweet = timeLine.retweeted
-      likeButton.isSelected = timeLine.favorited
-      retweetedButton.isSelected = timeLine.retweeted
-     // likeButton.setImage(UIinamed: "liked", for: UIControlState.normal)
-//      if isFavorited {
-//        likeButton.setImage(UIImage(named: "liked"), for: .selected)
-//      }
-//      if isRetweet {
-//        retweetedButton.setImage(UIImage(named: "retweeted"), for: .selected)
-//      }
-//      likeButton.
-      
-      
-    //  print(timeLine.favorited)
+      likeButton.setSelected(selected: isFavorited, animated: false)
+      retweetedButton.setSelected(selected: isRetweet, animated: false)
+
       
       if let userRetweet = timeLine.UserRetweet  {
-        nameRetweetedLabel.text = userRetweet.name! + "retweeted"
+        nameRetweetedLabel.text = userRetweet.name! + " retweeted"
         imageRetweeted.isHidden = false
         nameRetweetedLabel.isHidden = false
 
@@ -82,14 +66,7 @@ class TimeLineCell: UITableViewCell, FaveButtonDelegate {
     
   }
 
-  let colors = [
-    DotColors(first: color(0x7DC2F4), second: color(0xE2264D)),
-    DotColors(first: color(0xF8CC61), second: color(0x9BDFBA)),
-    DotColors(first: color(0xAF90F4), second: color(0x90D1F9)),
-    DotColors(first: color(0xE9A966), second: color(0xF8C852)),
-    DotColors(first: color(0xF68FA7), second: color(0xF6A2B8))
-  ]
-  
+
   
   override func awakeFromNib() {
     likeButton.delegate = self
@@ -97,15 +74,19 @@ class TimeLineCell: UITableViewCell, FaveButtonDelegate {
     
   }
   
+  @IBAction func onReplyClick(_ sender: UIButton) {
+    delegate.onReplyClick(cell: self, timeLine: timeLine)
+  }
+
   func faveButton(_ faveButton: FaveButton, didSelected selected: Bool){
     if faveButton == likeButton {
       isFavorited = !isFavorited
       delegate.onFavoritedClick(cell: self, isFavorited: isFavorited)
-      print("like button click")
+     // print("like button click")
     } else if faveButton == retweetedButton{
       isRetweet = !isRetweet
       delegate.onRetweetClick(cell: self, isRetweet: isRetweet)
-      print("retweet button click")
+     // print("retweet button click")
     }
   
   }

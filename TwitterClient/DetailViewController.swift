@@ -8,9 +8,8 @@
 
 import UIKit
 import AFNetworking
-import FaveButton
 
-class DetailViewController: UIViewController {
+class DetailViewController: UIViewController, FaveButtonDelegate {
   
   @IBOutlet weak var nameLabel: UILabel!
   @IBOutlet weak var tagNameLabel: UILabel!
@@ -44,8 +43,14 @@ class DetailViewController: UIViewController {
       
       isFavorited = timeLine.favorited
       isRetweet = timeLine.retweeted
-      likeButton.isSelected = timeLine.favorited
-      retweetedButton.isSelected = timeLine.retweeted
+      
+      print("****isFavorited: \(isFavorited)")
+      print("****isRetweet: \(isRetweet)")
+//      likeButton.isSelected = timeLine.favorited
+//      retweetedButton.isSelected = timeLine.retweeted
+      
+      likeButton.setSelected(selected: isFavorited, animated: false)
+      retweetedButton.setSelected(selected: isRetweet, animated: false)
       
       if let userRetweet = timeLine.UserRetweet  {
         nameRetweetedLabel.text = userRetweet.name! + "retweeted"
@@ -62,6 +67,19 @@ class DetailViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+  
+  func faveButton(_ faveButton: FaveButton, didSelected selected: Bool){
+//    if faveButton == likeButton {
+//      isFavorited = !isFavorited
+//      delegate.onFavoritedClick(cell: self, isFavorited: isFavorited)
+//      print("like button click")
+//    } else if faveButton == retweetedButton{
+//      isRetweet = !isRetweet
+//      delegate.onRetweetClick(cell: self, isRetweet: isRetweet)
+//      print("retweet button click")
+//    }
+    
+  }
     
 
     /*

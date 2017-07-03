@@ -23,6 +23,8 @@ class TwitterAPI: BDBOAuth1SessionManager {
   func requestLogin() {
     // remove access token
     TwitterAPI.sharedInstance?.requestSerializer.removeAccessToken()
+    // to make sure whoever login before, loutout first
+    TwitterAPI.sharedInstance?.deauthorize()
     
     TwitterAPI.sharedInstance?.fetchRequestToken(withPath: "oauth/request_token", method: "POST", callbackURL: URL(string: "TwitterClient://"), scope: nil, success: { (response: BDBOAuth1Credential?) in
       
@@ -48,10 +50,6 @@ class TwitterAPI: BDBOAuth1SessionManager {
         let user = User(dictionary: response as! NSDictionary)
         
         complete(user)
-        
-//        print("name: \(user.name!)")
-//        print("screenName: \(user.screenName!)")
-//        print("profileImageUrl \(user.profileImageUrl!)")
       }
       
     }, failure: { (_: URLSessionDataTask?, error: Error) in
@@ -88,16 +86,15 @@ class TwitterAPI: BDBOAuth1SessionManager {
   
   // MARK: - Favorite
   
-  func favoriteStatus(id: String?, complete: @escaping (Error?) -> Void) {
+  func favoriteStatus(id: String?, complete: @escaping (TimeLine? ,Error?) -> Void) {
     _ = post("1.1/favorites/create.json", parameters: NSDictionary(dictionary: ["id": id!]), progress: nil, success: { (_: URLSessionDataTask, response: Any?) in
       if response != nil  {
-        print("***Success favorite status")
-        complete(nil)
+        complete(TimeLine(dictionary: response as! NSDictionary) ,nil)
         
       }
       
     }, failure: { (_: URLSessionDataTask?, error: Error) in
-      complete(error)
+      complete(nil, error)
       
     })
   }
@@ -105,19 +102,68 @@ class TwitterAPI: BDBOAuth1SessionManager {
   
   // MARK: - Retweet
   
-  func retweetStatus(id: String?, complete: @escaping (Error?) -> Void) {
+  func retweetStatus(id: String?, complete: @escaping (TimeLine? ,Error?) -> Void) {
     _ = post("1.1/statuses/retweet/\(id!).json", parameters: nil, progress: nil, success: { (_: URLSessionDataTask, response: Any?) in
       if response != nil  {
-        print("***Success favorite status")
-        complete(nil)
+        complete(TimeLine(dictionary: response as! NSDictionary) ,nil)
         
       }
       
     }, failure: { (_: URLSessionDataTask?, error: Error) in
-      complete(error)
+      complete(nil, error)
       
     })
   }
+  
+  // MARK: - UnFavorite
+  
+  func unFavoriteStatus(id: String?, complete: @escaping (TimeLine? ,Error?) -> Void) {
+    _ = post("1.1/favorites/destroy.json", parameters: NSDictionary(dictionary: ["id": id!]), progress: nil, success: { (_: URLSessionDataTask, response: Any?) in
+      if response != nil  {
+        complete(TimeLine(dictionary: response as! NSDictionary) ,nil)
+        
+      }
+      
+    }, failure: { (_: URLSessionDataTask?, error: Error) in
+      complete(nil, error)
+      
+    })
+  }
+  
+  // MARK: - UnRetweet
+  
+  func unRetweetStatus(id: String?, complete: @escaping (TimeLine? ,Error?) -> Void) {
+    _ = post("1.1/statuses/unretweet/\(id!).json", parameters: nil, progress: nil, success: { (_: URLSessionDataTask, response: Any?) in
+      if response != nil  {
+        complete(TimeLine(dictionary: response as! NSDictionary) ,nil)
+        
+      }
+      
+    }, failure: { (_: URLSessionDataTask?, error: Error) in
+      complete(nil, error)
+      
+    })
+  }
+  
+  
+  
+  // MARK: - Create and Reply Twitter
+  
+  func createTwitterStatus(parameters: NSDictionary, complete: @escaping (TimeLine?, Error?) -> Void) {
+    _ = TwitterAPI.sharedInstance?.post("1.1/statuses/update.json", parameters: parameters, progress: nil, success: { (_: URLSessionDataTask, response: Any?) in
+      if response != nil  {
+        complete(TimeLine(dictionary: response as! NSDictionary) ,nil)
+        
+      }
+      
+    }, failure: { (_: URLSessionDataTask?, error: Error) in
+      complete(nil, error)
+      
+    })
+  }
+  
+  
+  
   
   // MARK: - Halder callback
   
@@ -136,6 +182,10 @@ class TwitterAPI: BDBOAuth1SessionManager {
         
         if let response = response {
           print("access token = \(response.token)")
+          self.getUserInfo {
+            (user) in
+            User.currentUser = user
+          }
           
           // save access token
           TwitterAPI.sharedInstance?.requestSerializer.saveAccessToken(response)

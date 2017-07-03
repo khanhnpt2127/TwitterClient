@@ -16,21 +16,18 @@ PODS:
     - AFNetworking/NSURLSession
   - BDBOAuth1Manager (2.0.0):
     - AFNetworking/NSURLSession (~> 3.0.0)
-  - FaveButton (2.0.3)
   - MBProgressHUD (1.0.0)
 
 DEPENDENCIES:
   - AFNetworking
   - BDBOAuth1Manager
-  - FaveButton
   - MBProgressHUD
 
 SPEC CHECKSUMS:
   AFNetworking: a0075feb321559dc78d9d85b55d11caa19eabb93
   BDBOAuth1Manager: 92d17d06f8a648602962304cd2f35ae7394fa001
-  FaveButton: cfcbc5e73da159c4f916613da5687357b5bb4783
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
 
-PODFILE CHECKSUM: bb046962043dc79def16822ed26137b2109754f2
+PODFILE CHECKSUM: e7e996aa01bdc07ac534d99cf97efbda183c2d4e
 
 COCOAPODS: 1.2.0
