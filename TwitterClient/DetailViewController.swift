@@ -46,6 +46,10 @@ class DetailViewController: UIViewController, FaveButtonDelegate {
       
       likeButton.delegate = self
       retweetedButton.delegate = self
+      
+      
+      // set navibar color
+      navigationController!.navigationBar.barTintColor = UIColor.white
 
       nameLabel.text = timeLine.user!.name
       tagNameLabel.text = "@" + timeLine.user!.screenName!

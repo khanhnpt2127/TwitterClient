@@ -28,6 +28,14 @@ class TimeLineViewController: UIViewController {
     tableView.rowHeight = UITableViewAutomaticDimension
     
     
+    // set navibar color
+    navigationController!.navigationBar.barTintColor = UIColor.white
+    
+    let logo = UIImage(named: "iconsNav")
+    let imageView = UIImageView(image:logo)
+    self.navigationItem.titleView = imageView
+    
+    
     // Set up Infinite Scroll loading indicator
     let frame = CGRect(x: 0, y: tableView.contentSize.height, width: tableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
     loadingMoreView = InfiniteScrollActivityView(frame: frame)
@@ -66,9 +74,7 @@ class TimeLineViewController: UIViewController {
     
     
   }
-  @IBAction func onNext(_ sender: UIBarButtonItem) {
-    doLoadMore(id: timeLines[timeLines.count - 1].idStr)
-  }
+
   func loadDataWithRefreshControl(_ refreshControl: UIRefreshControl) {
     
     isFreshDataLoading = true
@@ -177,7 +183,6 @@ extension TimeLineViewController: UITableViewDelegate, UITableViewDataSource {
   }
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "TimeLineCell", for: indexPath) as! TimeLineCell
-    cell.count = indexPath.row
     
     cell.delegate = self
     

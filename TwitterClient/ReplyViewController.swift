@@ -96,20 +96,6 @@ class ReplyViewController: UIViewController, UITextViewDelegate {
   }
 
 
-  @IBAction func onReply(_ sender: UIBarButtonItem) {
-    
-    let params = NSMutableDictionary()
-    params.setValue("@" + timeLine.user!.screenName! + " " + textView.text, forKey: "status")
-    params.setValue(timeLine.idStr!, forKey: "in_reply_to_status_id")
-    
-    TwitterAPI.sharedInstance?.createTwitterStatus(parameters: params){
-      (timeLine, error) in
-      if error == nil {
-        print("Reply twitter success")
-      } else {
-        print("have error when Reply twitter \(error!)")
-      }
-    }
-  }
+ 
 
 }

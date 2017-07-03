@@ -16,22 +16,9 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
       
-      if let timeLines = timeLines {
-        print("******timeLines \(timeLines)")
-      }
 
     }
   
-  
-  
-  @IBAction func logout(_ sender: Any) {
-    TwitterAPI.sharedInstance?.requestSerializer.removeAccessToken()
-  }
-  @IBAction func check(_ sender: Any) {
-   // TwitterAPI.sharedInstance?.getUserInfo()
-  }
-
-
   @IBAction func onLogin(_ sender: UIButton) {
     TwitterAPI.sharedInstance?.requestLogin()
   }

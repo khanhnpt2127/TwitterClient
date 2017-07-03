@@ -30,6 +30,9 @@ class NewTwetterViewController: UIViewController, UITextViewDelegate {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    // set navibar color
+    navigationController!.navigationBar.barTintColor = UIColor.white
+    
     textView.delegate = self
     let user = User.currentUser
     if user != nil {
@@ -105,21 +108,7 @@ class NewTwetterViewController: UIViewController, UITextViewDelegate {
     }
   }
   
-  @IBAction func onCreateTwitter(_ sender: UIBarButtonItem) {
-    let params = NSMutableDictionary()
-    params.setValue(textView.text, forKey: "status")
-    
-    TwitterAPI.sharedInstance?.createTwitterStatus(parameters: params){
-      (timeLine, error) in
-      if error == nil {
-        print("***Success create status")
-        self.delegate.newTwetterViewController(viewController: self, tileLine: timeLine!)
-        self.dismiss(animated: true, completion: nil)
-      } else {
-        print("***have error when create twitter \(error!)")
-      }
-    }
-  }
+ 
   
   @IBAction func onCancel(_ sender: UIBarButtonItem) {
     dismiss(animated: true, completion: nil)
